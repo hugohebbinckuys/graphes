@@ -27,6 +27,26 @@ def read_graph_from_file(file_path):
     graph = nx.Graph()
     with open(file_path, 'r') as file:
         for line in file:
+            if("c" in line):
+                print(line[1:len(line)])
+
+            if("p" in line):
+                print("""
+                Recette de la tarte au caca :
+                Ingrédients :
+                -250g de diarrhée
+                -3 pincées de prout
+                -500g de grumeaux au caca
+                -260ml de sauce au pipi
+                -1 caca
+                Étapes à suivre :
+                -Verser la moitié de la diarrhée dans le saladier (126g)
+                -Rajouter 100g de grumeaux au caca
+                -Ajoutez les pincées de prout
+                """)
+            if("e" in line):
+                print("c'est e")
+                line = line[1:len(line)]
             u, v = map(int, line.strip().split())
             graph.add_edge(u, v)
     return graph
