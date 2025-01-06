@@ -27,29 +27,29 @@ def read_graph_from_file(file_path):
     graph = nx.Graph()
     with open(file_path, 'r') as file:
         for line in file:
-            if("c" in line):
-                print(line[1:len(line)])
-
-            if("p" in line):
-                print("""
-                Recette de la tarte au caca :
-                Ingrédients :
-                -250g de diarrhée
-                -3 pincées de prout
-                -500g de grumeaux au caca
-                -260ml de sauce au pipi
-                -1 caca
-                Étapes à suivre :
-                -Verser la moitié de la diarrhée dans le saladier (126g)
-                -Rajouter 100g de grumeaux au caca
-                -Ajoutez les pincées de prout
-                """)
-            if("e" in line):
-                print("c'est e")
-                line = line[1:len(line)]
-            u, v = map(int, line.strip().split())
-            graph.add_edge(u, v)
+            line = line.strip()  # Enlever les espaces avant et après
+            if not line:  # Ignorer les lignes vides
+                continue
+            
+            if line.startswith("c"):
+                print(line[1:])  # Afficher les commentaires (lignes commençant par 'c')
+                continue
+            
+            if line.startswith("p"):
+                # Traitement spécifique pour les lignes de type 'p' si nécessaire
+                print("Détails du graphe :", line[1:])
+                continue
+            
+            if line.startswith("e"):
+                # Pour les arêtes, on lit les deux entiers u et v
+                try:
+                    u, v = map(int, line[1:].split())  # Supposer que 'e' est suivi de deux entiers
+                    graph.add_edge(u, v)
+                except ValueError:
+                    print(f"Format incorrect dans la ligne : {line}")
+                    continue  # Ignorer les lignes mal formatées
     return graph
+
 
 def write_graph_to_file(graph, file_path):
     """Écrit un graphe dans un fichier"""
@@ -144,21 +144,21 @@ def test_with_random_graph():
     print("Nombre de couleurs (DSATUR) :", max(coloration_dsatur.values()))
     print("Temps DSATUR :", end - start, "secondes")
 
-    # Visualisation des graphes
-    colors_wp = [coloration_wp.get(node, 0) for node in random_graph.nodes()]
-    nx.draw(random_graph, with_labels=True, node_color=colors_wp, cmap=plt.cm.rainbow)
-    plt.title("Welsh-Powell (Graphe Aléatoire)")
-    plt.show()
+    # # Visualisation des graphes
+    # colors_wp = [coloration_wp.get(node, 0) for node in random_graph.nodes()]
+    # nx.draw(random_graph, with_labels=True, node_color=colors_wp, cmap=plt.cm.rainbow)
+    # plt.title("Welsh-Powell (Graphe Aléatoire)")
+    # plt.show()
 
-    colors_greedy = [coloration_greedy.get(node, 0) for node in random_graph.nodes()]
-    nx.draw(random_graph, with_labels=True, node_color=colors_greedy, cmap=plt.cm.rainbow)
-    plt.title("Greedy Search (Graphe Aléatoire)")
-    plt.show()
+    # colors_greedy = [coloration_greedy.get(node, 0) for node in random_graph.nodes()]
+    # nx.draw(random_graph, with_labels=True, node_color=colors_greedy, cmap=plt.cm.rainbow)
+    # plt.title("Greedy Search (Graphe Aléatoire)")
+    # plt.show()
 
-    colors_dsatur = [coloration_dsatur.get(node, 0) for node in random_graph.nodes()]
-    nx.draw(random_graph, with_labels=True, node_color=colors_dsatur, cmap=plt.cm.rainbow)
-    plt.title("DSATUR (Graphe Aléatoire)")
-    plt.show()
+    # colors_dsatur = [coloration_dsatur.get(node, 0) for node in random_graph.nodes()]
+    # nx.draw(random_graph, with_labels=True, node_color=colors_dsatur, cmap=plt.cm.rainbow)
+    # plt.title("DSATUR (Graphe Aléatoire)")
+    # plt.show()
 
 # Exemple d'utilisation
 g = create_graph()
@@ -209,21 +209,21 @@ def test_with_file_graph(file_path):
     print("Nombre de couleurs (DSATUR) :", max(coloration_dsatur.values()))
     print("Temps DSATUR :", end - start, "secondes")
 
-    # Visualisation des graphes
-    colors_wp = [coloration_wp.get(node, 0) for node in graph_from_file.nodes()]
-    nx.draw(graph_from_file, with_labels=True, node_color=colors_wp, cmap=plt.cm.rainbow)
-    plt.title(f"Welsh-Powell (Graphe depuis {file_path})")
-    plt.show()
+    # # Visualisation des graphes
+    # colors_wp = [coloration_wp.get(node, 0) for node in graph_from_file.nodes()]
+    # nx.draw(graph_from_file, with_labels=True, node_color=colors_wp, cmap=plt.cm.rainbow)
+    # plt.title(f"Welsh-Powell (Graphe depuis {file_path})")
+    # plt.show()
 
-    colors_greedy = [coloration_greedy.get(node, 0) for node in graph_from_file.nodes()]
-    nx.draw(graph_from_file, with_labels=True, node_color=colors_greedy, cmap=plt.cm.rainbow)
-    plt.title(f"Greedy Search (Graphe depuis {file_path})")
-    plt.show()
+    # colors_greedy = [coloration_greedy.get(node, 0) for node in graph_from_file.nodes()]
+    # nx.draw(graph_from_file, with_labels=True, node_color=colors_greedy, cmap=plt.cm.rainbow)
+    # plt.title(f"Greedy Search (Graphe depuis {file_path})")
+    # plt.show()
 
-    colors_dsatur = [coloration_dsatur.get(node, 0) for node in graph_from_file.nodes()]
-    nx.draw(graph_from_file, with_labels=True, node_color=colors_dsatur, cmap=plt.cm.rainbow)
-    plt.title(f"DSATUR (Graphe depuis {file_path})")
-    plt.show()
+    # colors_dsatur = [coloration_dsatur.get(node, 0) for node in graph_from_file.nodes()]
+    # nx.draw(graph_from_file, with_labels=True, node_color=colors_dsatur, cmap=plt.cm.rainbow)
+    # plt.title(f"DSATUR (Graphe depuis {file_path})")
+    # plt.show()
 
 # Exemple d'utilisation (avec un fichier "anna.col.txt" qui contient un graphe)
 g = create_graph()
@@ -261,16 +261,16 @@ print("Graphe sauvegardé dans graph.txt")
 g_loaded = read_graph_from_file("graph.txt")
 display_graph(g_loaded)
 
-# Visualisation du graphe
-colors_wp = [coloration_wp.get(node, 0) for node in g_loaded.nodes()]
-nx.draw(g_loaded, with_labels=True, node_color=colors_wp, cmap=plt.cm.rainbow)
-plt.title("Welsh-Powell Coloration")
-plt.show()
+# # Visualisation du graphe
+# colors_wp = [coloration_wp.get(node, 0) for node in g_loaded.nodes()]
+# nx.draw(g_loaded, with_labels=True, node_color=colors_wp, cmap=plt.cm.rainbow)
+# plt.title("Welsh-Powell Coloration")
+# plt.show()
 
-colors_greedy = [coloration_greedy.get(node, 0) for node in g_loaded.nodes()]
-nx.draw(g_loaded, with_labels=True, node_color=colors_greedy, cmap=plt.cm.rainbow)
-plt.title("Greedy Search Coloration")
-plt.show()
+# colors_greedy = [coloration_greedy.get(node, 0) for node in g_loaded.nodes()]
+# nx.draw(g_loaded, with_labels=True, node_color=colors_greedy, cmap=plt.cm.rainbow)
+# plt.title("Greedy Search Coloration")
+# plt.show()
 
 # Tester avec un graphe aléatoire
 # test_with_random_graph()
@@ -297,16 +297,16 @@ print("Graphe sauvegardé dans graph.txt")
 g_loaded = read_graph_from_file("graph.txt")
 display_graph(g_loaded)
 
-# Visualisation du graphe
-colors_wp = [coloration_wp.get(node, 0) for node in g_loaded.nodes()]
-nx.draw(g_loaded, with_labels=True, node_color=colors_wp, cmap=plt.cm.rainbow)
-plt.title("Welsh-Powell Coloration")
-plt.show()
+# # Visualisation du graphe
+# colors_wp = [coloration_wp.get(node, 0) for node in g_loaded.nodes()]
+# nx.draw(g_loaded, with_labels=True, node_color=colors_wp, cmap=plt.cm.rainbow)
+# plt.title("Welsh-Powell Coloration")
+# plt.show()
 
-colors_greedy = [coloration_greedy.get(node, 0) for node in g_loaded.nodes()]
-nx.draw(g_loaded, with_labels=True, node_color=colors_greedy, cmap=plt.cm.rainbow)
-plt.title("Greedy Search Coloration")
-plt.show()
+# colors_greedy = [coloration_greedy.get(node, 0) for node in g_loaded.nodes()]
+# nx.draw(g_loaded, with_labels=True, node_color=colors_greedy, cmap=plt.cm.rainbow)
+# plt.title("Greedy Search Coloration")
+# plt.show()
 
 # Tester avec un graphe aléatoire
 test_with_random_graph()
