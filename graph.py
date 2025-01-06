@@ -157,6 +157,107 @@ start = time.time()
 coloration_wp = welsh_powell(g)
 end = time.time()
 print("Welsh-Powell Coloration :", coloration_wp)
+# Les fonctions existantes (create_graph, add_node, add_edge, remove_node, etc.) restent inchangées.
+
+def test_with_file_graph(file_path):
+    """Teste les algorithmes sur un graphe provenant d'un fichier"""
+    # Lire le graphe depuis le fichier
+    graph_from_file = read_graph_from_file(file_path)
+    display_graph(graph_from_file)
+
+    # Appliquer Welsh-Powell
+    start = time.time()
+    coloration_wp = welsh_powell(graph_from_file)
+    end = time.time()
+    print(f"Welsh-Powell (Graphe depuis {file_path}) :", coloration_wp)
+    print("Nombre de couleurs (Welsh-Powell) :", max(coloration_wp.values()))
+    print("Temps Welsh-Powell :", end - start, "secondes")
+
+    # Appliquer Greedy Search
+    start = time.time()
+    coloration_greedy = greedy_coloring(graph_from_file)
+    end = time.time()
+    print(f"Greedy Search (Graphe depuis {file_path}) :", coloration_greedy)
+    print("Nombre de couleurs (Greedy Search) :", max(coloration_greedy.values()))
+    print("Temps Greedy Search :", end - start, "secondes")
+
+    # Appliquer DSATUR
+    start = time.time()
+    coloration_dsatur = dsatur(graph_from_file)
+    end = time.time()
+    print(f"DSATUR (Graphe depuis {file_path}) :", coloration_dsatur)
+    print("Nombre de couleurs (DSATUR) :", max(coloration_dsatur.values()))
+    print("Temps DSATUR :", end - start, "secondes")
+
+    # Visualisation des graphes
+    colors_wp = [coloration_wp.get(node, 0) for node in graph_from_file.nodes()]
+    nx.draw(graph_from_file, with_labels=True, node_color=colors_wp, cmap=plt.cm.rainbow)
+    plt.title(f"Welsh-Powell (Graphe depuis {file_path})")
+    plt.show()
+
+    colors_greedy = [coloration_greedy.get(node, 0) for node in graph_from_file.nodes()]
+    nx.draw(graph_from_file, with_labels=True, node_color=colors_greedy, cmap=plt.cm.rainbow)
+    plt.title(f"Greedy Search (Graphe depuis {file_path})")
+    plt.show()
+
+    colors_dsatur = [coloration_dsatur.get(node, 0) for node in graph_from_file.nodes()]
+    nx.draw(graph_from_file, with_labels=True, node_color=colors_dsatur, cmap=plt.cm.rainbow)
+    plt.title(f"DSATUR (Graphe depuis {file_path})")
+    plt.show()
+
+# Exemple d'utilisation (avec un fichier "anna.col.txt" qui contient un graphe)
+g = create_graph()
+add_node(g, 1)
+add_node(g, 2)
+add_node(g, 3)
+add_node(g, 4)
+add_edge(g, 1, 2)
+add_edge(g, 2, 3)
+add_edge(g, 3, 4)
+add_edge(g, 4, 1)
+display_graph(g)
+
+# Appliquer Welsh-Powell
+start = time.time()
+coloration_wp = welsh_powell(g)
+end = time.time()
+print("Welsh-Powell Coloration :", coloration_wp)
+print("Nombre de couleurs (Welsh-Powell) :", max(coloration_wp.values()))
+print("Temps Welsh-Powell :", end - start, "secondes")
+
+# Appliquer Greedy Search
+start = time.time()
+coloration_greedy = greedy_coloring(g)
+end = time.time()
+print("Greedy Search Coloration :", coloration_greedy)
+print("Nombre de couleurs (Greedy Search) :", max(coloration_greedy.values()))
+print("Temps Greedy Search :", end - start, "secondes")
+
+# Sauvegarde dans un fichier
+write_graph_to_file(g, "graph.txt")
+print("Graphe sauvegardé dans graph.txt")
+
+# Lecture depuis un fichier
+g_loaded = read_graph_from_file("graph.txt")
+display_graph(g_loaded)
+
+# Visualisation du graphe
+colors_wp = [coloration_wp.get(node, 0) for node in g_loaded.nodes()]
+nx.draw(g_loaded, with_labels=True, node_color=colors_wp, cmap=plt.cm.rainbow)
+plt.title("Welsh-Powell Coloration")
+plt.show()
+
+colors_greedy = [coloration_greedy.get(node, 0) for node in g_loaded.nodes()]
+nx.draw(g_loaded, with_labels=True, node_color=colors_greedy, cmap=plt.cm.rainbow)
+plt.title("Greedy Search Coloration")
+plt.show()
+
+# Tester avec un graphe aléatoire
+# test_with_random_graph()
+
+# Tester avec un graphe provenant d'un fichier ("anna.col.txt")
+test_with_file_graph("anna.col.txt")
+
 print("Nombre de couleurs (Welsh-Powell) :", max(coloration_wp.values()))
 print("Temps Welsh-Powell :", end - start, "secondes")
 
@@ -191,3 +292,8 @@ plt.show()
 test_with_random_graph()
 
 # okay okay 
+
+
+# ------ Mise en place de anna.col.txt ------ # 
+
+
